@@ -49,10 +49,8 @@ endif()
 if(HAS_SOCKLEN_T)
     add_definitions(-DHAS_SOCKLEN_T=1)
 endif()
- 
-include_directories(${PROJECT_SOURCE_DIR}/include)
- 
-add_library(enet STATIC
+
+set(ENET_SOURCES
         callbacks.c
         compress.c
         host.c
@@ -62,4 +60,24 @@ add_library(enet STATIC
         protocol.c
         unix.c
         win32.c
-    )
+)
+
+set(ENET_HEADERS
+        include/enet/callbacks.h
+        include/enet/enet.h
+        include/enet/list.h
+        include/enet/protocol.h
+        include/enet/time.h
+        include/enet/types.h
+        include/enet/unix.h
+        include/enet/utility.h
+        include/enet/win32.h
+)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+ 
+add_library(enet STATIC ${ENET_SOURCES} ${ENET_HEADERS})
+
+install(TARGETS enet DESTINATION "lib")
+install(FILES ${ENET_HEADERS} DESTINATION "include/enet")
+
